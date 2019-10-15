@@ -16,7 +16,7 @@ isolated environments without much headache.
 ## Example usage
 Run the following to create a no-login user named `hello-tsbox`:
 ```bash
-$ tsbox create hello-tsbox
+$ sudo tsbox create hello-tsbox
 ```
 
 In addition to a user named `hello-tsbox` being created, you'll notice
@@ -34,12 +34,12 @@ mount:
 
 You can run a shell as `hello-tsbox`; it'll run in a chroot at `.tsbox/chroots/hello-tsbox`:
 ```bash
-$ tsbox run hello-tsbox bash -i
+$ sudo tsbox run hello-tsbox bash -i
 ```
 
 When the process exits, the chroot directory will be deleted (thanks to `persistent: false`).
 You can entirely destroy the `hello-tsbox` user and its associated files by running:
 
 ```bash
-$ tsbox destroy -y hello-tsbox
+$ sudo tsbox destroy -y hello-tsbox
 ```
