@@ -31,7 +31,8 @@ a file named `.tsbox/users/hello-tsbox.yaml` with contents like the following:
 
 ```yaml
 env: {}
-network: false
+network:
+  loopback: false
 persistent: false
 mount:
   - /bin
