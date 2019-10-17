@@ -82,7 +82,7 @@ elif sys.argv[0] == "create":
         with open(config_file, "w") as file:
             config = {
                 'env': {},
-                'network': {'loopback': False},
+                'network': {'share': False},
                 'persistent': False,
                 'mount': [
                     '/bin',
@@ -138,17 +138,17 @@ elif sys.argv[0] == "run":
             config = {}
         chroot_dir = ".tsbox/chroots/" + username
         network = config.get('network', {})
-        proc = [
-            "sudo",
-            "unshare",
-            "-n",
+        proc = ["sudo"]
+        if not network.get('share', False):
+            proc.extend(["unshare", "-n"])
+        proc.extend([
             "env",
             "-i",
             "/bin/bash",
             os.path.join(os.path.dirname(executable), "tsbox-shell"),
             username,
-            "LOOPBACK-ON" if network.get('loopback', False) else "LOOPBACK-OFF"
-        ]
+            "LOOPBACK-ON" if network.get('share', False) else "LOOPBACK-OFF"
+        ])
         proc.extend(sys.argv)
         p = Popen(proc, env=config.get('env', {}))
         exit(p.wait())

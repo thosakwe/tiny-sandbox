@@ -35,7 +35,7 @@ a file named `.tsbox/users/hello-tsbox.yaml` with contents like the following:
 ```yaml
 env: {}
 network:
-  loopback: false
+  share: false
 persistent: false
 mount:
   - /bin
@@ -79,6 +79,6 @@ environment variables are not shared.
 * `mount`: Specifies directories to mount into the chroot, read-only.
 * `mount_rw`: Specifies directories to mount into the chroot, read-write.
 * `network`:
-  * `loopback`: If `False` (default), then sockets bound by the child process
-  will only be able to listen on localhost.
+  * `share`: If `False` (default), then the child process will run in its own
+  network namespace.
 * `persistent`: Currently unused.
