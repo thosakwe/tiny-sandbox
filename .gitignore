@@ -7,9 +7,12 @@
 .vagrant/
 
 # Log files (if you are creating logs in debug mode, uncomment this)
-# *.log
+*.log
 
 ### Vagrant Patch ###
 *.box
 
 # End of https://www.gitignore.io/api/vagrant
+.tsbox/
+
+.vscode/

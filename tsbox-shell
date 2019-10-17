@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+USERNAME=$1
+LOOPBACK_CTRL=$2
+CHROOT_DIR=".tsbox/chroots/$USERNAME"
+shift
+shift
+
+export HOME="/home/$USERNAME"
+
+if [ "$LOOPBACK_CTRL" != "LOOPBACK-ON" ]; then
+  ip link set dev lo up
+  # https://unix.stackexchange.com/a/392910
+  # accept incoming packets to loopback device
+  sudo iptables -A OUTPUT -m owner --uid $USERNAME -o lo -j ACCEPT
+  # drop everything else
+  sudo iptables -A OUTPUT -m owner --uid $USERNAME -j DROP
+    # change default action to drop
+  iptables -P INPUT DROP
+  # allow established connections (replies)
+  iptables -A INPUT -m state --state ESTABLISHED -j ACCEPT
+fi
+
+echo $$ > "/sys/fs/cgroup/memory/$USERNAME/tasks"
+sudo unshare -fpi sudo chroot --userspec "$USERNAME:$USERNAME" "$CHROOT_DIR" $*
+exit $?

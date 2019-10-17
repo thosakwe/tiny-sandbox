@@ -13,6 +13,13 @@ For example, if you are running multiple user's code on the machine, and cannot 
 to have them mess with another's code, `tiny-sandbox` is a very simple way to spin up
 isolated environments without much headache.
 
+## Prerequisites
+You must have the following installed:
+* `/bin/bash`
+* `chroot`
+* `ip`
+* `unshare`
+
 ## Example usage
 Run the following to create a no-login user named `hello-tsbox`:
 ```bash
@@ -23,23 +30,51 @@ In addition to a user named `hello-tsbox` being created, you'll notice
 a file named `.tsbox/users/hello-tsbox.yaml` with contents like the following:
 
 ```yaml
+env: {}
+network: false
 persistent: false
 mount:
+  - /bin
   - /usr/bin
   - /usr/local/bin
+  - /usr/lib
   - /lib
   - /lib64
   - /dev
 ```
 
-You can run a shell as `hello-tsbox`; it'll run in a chroot at `.tsbox/chroots/hello-tsbox`:
+Before you can run programs, you must `mount` the necessary directories. This command
+can be run multiple times, and is idempotent:
+
 ```bash
-$ sudo tsbox run hello-tsbox bash -i
+$ sudo tsbox mount hello-tsbox
 ```
 
-When the process exits, the chroot directory will be deleted (thanks to `persistent: false`).
+You can run a shell as `hello-tsbox`; it'll run in a chroot at `.tsbox/chroots/hello-tsbox`:
+```bash
+$ sudo tsbox shell hello-tsbox
+```
+
+You can run any process within the jail by calling `tsbox run`. In fact, `tsbox shell` is
+just an alias for running `/bin/bash`:
+
+```bash
+$ sudo tsbox run hello-tsbox whoami
+```
+
 You can entirely destroy the `hello-tsbox` user and its associated files by running:
 
 ```bash
-$ sudo tsbox destroy -y hello-tsbox
+$ sudo tsbox destroy hello-tsbox
 ```
+
+## Configuration
+* `env`: Optional environment variables to pass to the process. Parent
+environment variables are not shared.
+* `memory_limit`: Sets a limit on memory usage. Defaults to `128000000` (128MB).
+* `mount`: Specifies directories to mount into the chroot, read-only.
+* `mount_rw`: Specifies directories to mount into the chroot, read-write.
+* `network`:
+  * `loopback`: If `False` (default), then sockets bound by the child process
+  will only be able to listen on localhost.
+* `persistent`: Currently unused.
