@@ -15,9 +15,9 @@ if [ "$LOOPBACK_CTRL" != "LOOPBACK-ON" ]; then
   # drop everything else
   sudo iptables -A OUTPUT -m owner --uid $USERNAME -j DROP
     # change default action to drop
-  iptables -P INPUT DROP
-  # allow established connections (replies)
-  iptables -A INPUT -m state --state ESTABLISHED -j ACCEPT
+  # iptables -P INPUT DROP
+  # # allow established connections (replies)
+  # iptables -A INPUT -m state --state ESTABLISHED -j ACCEPT
 fi
 
 echo $$ > "/sys/fs/cgroup/memory/$USERNAME/tasks"

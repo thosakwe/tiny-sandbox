@@ -158,7 +158,7 @@ elif sys.argv[0] == "shell":
         print("usage: tsbox shell <name>")
     else:
         username = sys.argv[0]
-        p = Popen([executable, "run", username, "/bin/sh", "-i"])
+        p = Popen([executable, "run", username, "/bin/bash", "-i"])
         exit(p.wait())
 elif sys.argv[0] == "destroy":
     sys.argv.pop(0)
