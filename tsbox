@@ -82,7 +82,7 @@ elif sys.argv[0] == "create":
         with open(config_file, "w") as file:
             config = {
                 'env': {},
-                'network': {'share': False},
+                'network': {'loopback': True, 'share': False},
                 'persistent': False,
                 'mount': [
                     '/bin',
@@ -147,7 +147,7 @@ elif sys.argv[0] == "run":
             "/bin/bash",
             os.path.join(os.path.dirname(executable), "tsbox-shell"),
             username,
-            "LOOPBACK-ON" if network.get('share', False) else "LOOPBACK-OFF"
+            "NOT-LOOPBACK-ONLY" if network.get('loopback', False) else "LOOPBACK-ONLY"
         ])
         proc.extend(sys.argv)
         p = Popen(proc, env=config.get('env', {}))

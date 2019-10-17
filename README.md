@@ -79,6 +79,8 @@ environment variables are not shared.
 * `mount`: Specifies directories to mount into the chroot, read-only.
 * `mount_rw`: Specifies directories to mount into the chroot, read-write.
 * `network`:
+  * `loopback`: If `True` (default), then the child process can only bind sockets
+  on the loopback address.
   * `share`: If `False` (default), then the child process will run in its own
   network namespace.
 * `persistent`: Currently unused.

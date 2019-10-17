@@ -7,8 +7,8 @@ shift
 
 export HOME="/home/$USERNAME"
 
-if [ "$LOOPBACK_CTRL" != "LOOPBACK-ON" ]; then
-  ip link set dev lo up
+if [ "$LOOPBACK_CTRL" == "LOOPBACK-ONLY" ]; then
+  # ip link set dev lo up
   # https://unix.stackexchange.com/a/392910
   # accept incoming packets to loopback device
   # sudo iptables -A OUTPUT -m owner --uid $USERNAME -o lo -j ACCEPT
@@ -18,6 +18,7 @@ if [ "$LOOPBACK_CTRL" != "LOOPBACK-ON" ]; then
   # iptables -P INPUT DROP
   # # allow established connections (replies)
   # iptables -A INPUT -m state --state ESTABLISHED -j ACCEPT
+  echo
 fi
 
 echo $$ > "/sys/fs/cgroup/memory/$USERNAME/tasks"
