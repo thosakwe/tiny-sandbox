@@ -1,8 +1,8 @@
 # tiny-sandbox
 User-friendly process isolation/sandboxing for Linux.
 
-*Note:* This is intended for one-off command-line applications, and is untested with desktop
-apps.
+*Note:* This is intended for one-off command-line applications, and is currently untested with
+desktop apps.
 
 ## About
 `tiny-sandbox` is a tool that manages unprivileged users on a Linux system.
